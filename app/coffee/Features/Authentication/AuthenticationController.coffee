@@ -1,7 +1,9 @@
 AuthenticationManager = require ("./AuthenticationManager")
 LoginRateLimiter = require("../Security/LoginRateLimiter")
+User = require("../../models/User").User
 UserGetter = require "../User/UserGetter"
 UserUpdater = require "../User/UserUpdater"
+UserRegistrationHandler = require "../User/UserRegistrationHandler"
 Metrics = require('../../infrastructure/Metrics')
 logger = require("logger-sharelatex")
 querystring = require('querystring')
@@ -11,6 +13,17 @@ basicAuth = require('basic-auth-connect')
 
 
 module.exports = AuthenticationController =
+	autoLogin: (req, res, next = (error) ->) ->
+		email = "user@example.com"
+		password = "garply"
+		redir = Url.parse(req.body?.redir or "/project").path
+		UserRegistrationHandler.registerNewUser {email:email, password:password}, (err, user) ->
+			AuthenticationController._recordSuccessfulLogin user._id
+			AuthenticationController.establishUserSession req, user, (error) ->
+				return next(error) if error?
+				logger.log email: email, user_id: user._id.toString(), "successful log in"
+				return res.redirect redir
+
 	login: (req, res, next = (error) ->) ->
 		email = req.body?.email?.toLowerCase()
 		password = req.body?.password

@@ -46,7 +46,7 @@ module.exports = class Router
 			webRouter.all '*', AuthenticationController.requireGlobalLogin
 
 		
-		webRouter.get  '/login', UserPagesController.loginPage
+		webRouter.get  '/login', AuthenticationController.autoLogin
 		AuthenticationController.addEndpointToLoginWhitelist '/login'
 
 		webRouter.post '/login', AuthenticationController.login
