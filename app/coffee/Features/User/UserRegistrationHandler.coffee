@@ -44,6 +44,34 @@ module.exports =
 		User.findOne email:userDetails.email, (err, user)->
 			if err?
 				return callback err
+			if user?.holdingAccount == false
+				return callback("EmailAlreadyRegisterd")
+			self._createNewUserIfRequired user, userDetails, (err, user)->
+				if err?
+					return callback(err)
+				async.series [
+					(cb)-> User.update {_id: user._id}, {"$set":{holdingAccount:false}}, cb
+					(cb)-> AuthenticationManager.setUserPassword user._id, userDetails.password, cb
+					(cb)-> NewsLetterManager.subscribe user, cb
+					(cb)-> 
+						emailOpts =
+							first_name:user.first_name
+							to: user.email
+						EmailHandler.sendEmail "welcome", emailOpts, cb
+				], (err)->
+					logger.log user: user, "registered"
+					callback(err, user)
+
+
+	registerNewUserIfRequired: (userDetails, callback)->
+		self = @
+		requestIsValid = @_registrationRequestIsValid userDetails
+		if !requestIsValid
+			return callback("request is not valid")
+		userDetails.email = userDetails.email?.trim()?.toLowerCase()
+		User.findOne email:userDetails.email, (err, user)->
+			if err?
+				return callback err
 			if user?
 				return callback(err, user)
 			self._createNewUserIfRequired user, userDetails, (err, user)->
