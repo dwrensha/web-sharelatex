@@ -115,7 +115,7 @@ define [
 			@pdfManager = new PdfManager(@)
 			if @userSettings.autoComplete
 				@autoCompleteManager = new AutoCompleteManager(@)
-			#@spellingManager = new SpellingManager(@)
+			@spellingManager = new SpellingManager(@)
 			@fileUploadManager = new FileUploadManager(@)
 			@searchManager = new SearchManager(@)
 			@cursorManager = new CursorManager(@)

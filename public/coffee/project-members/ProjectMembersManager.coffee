@@ -16,13 +16,14 @@ define [
 		constructor: (@ide, options) ->
 			options || = {}
 			setupArea = _.once =>
-				@ide.tabManager.addTab
-					id : "collaborators"
-					name: "Share"
-					content : $(@templates.userPanel)
-					lock: true
-					onShown: () =>
-						@publishProjectView?.refreshPublishStatus()
+				console.log('suppressing Share tab')
+				#@ide.tabManager.addTab
+				#	id : "collaborators"
+				#	name: "Share"
+				#	content : $(@templates.userPanel)
+				#	lock: true
+				#	onShown: () =>
+				#		@publishProjectView?.refreshPublishStatus()
 
 			setupPublish = _.once =>
 				if @ide.security? and @ide.security.permissionsLevel == "owner"
