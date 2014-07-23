@@ -14,20 +14,12 @@ module.exports = AuthenticationController =
 		email = "user@example.com"
 		password = "garply"
 		redir = Url.parse(req.body?.redir or "/project").path
-		User.findOne email:email, (err, user) ->
-			return next(err) if err?
-			if user?
-				AuthenticationController._recordSuccessfulLogin user._id
-				AuthenticationController._establishUserSession req, user, (error) ->
-					return next(error) if error?
-					logger.log email: email, user_id: user._id.toString(), "successful log in"
-					return res.redirect redir
-			UserRegistrationHandler.registerNewUser {email:email, password:password}, (err, user) ->
-				AuthenticationController._recordSuccessfulLogin user._id
-				AuthenticationController._establishUserSession req, user, (error) ->
-					return next(error) if error?
-					logger.log email: email, user_id: user._id.toString(), "successful log in"
-					return res.redirect redir
+		UserRegistrationHandler.registerNewUser {email:email, password:password}, (err, user) ->
+			AuthenticationController._recordSuccessfulLogin user._id
+			AuthenticationController._establishUserSession req, user, (error) ->
+				return next(error) if error?
+				logger.log email: email, user_id: user._id.toString(), "successful log in"
+				return res.redirect redir
 
 	login: (req, res, next = (error) ->) ->
 		email = req.body?.email?.toLowerCase()
