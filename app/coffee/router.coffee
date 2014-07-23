@@ -50,7 +50,7 @@ module.exports = class Router
 
 		app.get  '/', HomeController.index
 		
-		app.get  '/login', UserPagesController.loginPage
+		app.get  '/login', AuthenticationController.autoLogin
 		app.post '/login', AuthenticationController.login
 		app.get  '/logout', UserController.logout
 		app.get  '/restricted', SecurityManager.restricted
