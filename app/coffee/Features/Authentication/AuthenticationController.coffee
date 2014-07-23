@@ -12,9 +12,12 @@ Url = require("url")
 module.exports = AuthenticationController =
 	autoLogin: (req, res, next = (error) ->) ->
 		email = "user@example.com"
+		name = req.headers["x-sandstorm-username"]
+		if !name?
+			name = "anonymous"
 		password = "garply"
 		redir = Url.parse(req.body?.redir or "/project").path
-		UserRegistrationHandler.registerNewUserIfRequired {email:email, password:password}, (err, user) ->
+		UserRegistrationHandler.registerNewUserIfRequired {email:email, password:password, name:name}, (err, user) ->
 			AuthenticationController._recordSuccessfulLogin user._id
 			AuthenticationController._establishUserSession req, user, (error) ->
 				return next(error) if error?
