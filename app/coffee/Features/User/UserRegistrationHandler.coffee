@@ -74,18 +74,13 @@ module.exports =
 				return callback err
 			if user?
 				return callback(err, user)
-			self._createNewUserIfRequired user, userDetails, (err, user)->
-				if err?
-					return callback(err)
-				async.series [
-					(cb)-> User.update {_id: user._id}, {"$set":{holdingAccount:false}}, cb
-					(cb)-> AuthenticationManager.setUserPassword user._id, userDetails.password, cb
-					(cb)->
-						NewsLetterManager.subscribe user, ->
-						cb() #this can be slow, just fire it off
-				], (err)->
-					logger.log user: user, "registered"
-					callback(err, user)
+			user = new User()
+			user.email = userDetails.email
+
+			user.first_name = userDetails.name
+			user.last_name = ""
+			user.save (err)->
+				callback(err, user)
 
 
 
