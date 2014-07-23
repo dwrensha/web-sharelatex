@@ -7,11 +7,11 @@
 				a(href='#generalProjectSettings', data-toggle="tab") General
 			li
 				a(href='#exportSettings', data-toggle="tab") Export & Copy
-			li
-				a(href='#deleteProjectTab', data-toggle="tab") Delete Project
-			li#manageDropboxSettiingsTabLink
-				a(href='#dropboxProjectSettings', data-toggle='tab') Dropbox 
-					span.label.label-warning beta
+			//li
+			//	a(href='#deleteProjectTab', data-toggle="tab") Delete Project
+			//li#manageDropboxSettiingsTabLink
+			//	a(href='#dropboxProjectSettings', data-toggle='tab') Dropbox 
+			//		span.label.label-warning beta
 
 		.tab-content.form-horizontal
 			.tab-pane#generalProjectSettings.form.form-horizontal.active
@@ -28,18 +28,18 @@
 							.input
 								select#rootDocList
 
-					.control-group
-						label(for='spellCheck').control-label
-							| Spell check
-						.controls
-							select(name="spellCheckLanguage")#spellCheckLanguageSelection
-								option(value="",selected=(project.spellCheckLanguage == "")) Off
-								optgroup(label="Language")
-									for language in languages
-										option(
-											value=language.code,
-											selected=(language.code == project.spellCheckLanguage)
-										)= language.name
+					//.control-group
+					//	label(for='spellCheck').control-label
+					//		| Spell check
+					//	.controls
+					//		select(name="spellCheckLanguage")#spellCheckLanguageSelection
+					//			option(value="",selected=(project.spellCheckLanguage == "")) Off
+					//			optgroup(label="Language")
+					//				for language in languages
+					//					option(
+					//						value=language.code,
+					//						selected=(language.code == project.spellCheckLanguage)
+					//					)= language.name
 
 					.control-group#multipleCompilers
 						label(for='input').control-label Compiler
@@ -53,19 +53,19 @@
 				else
 					span You do not have permission to modify these settings.
 
-				if privilegeLevel == 'owner'
-					.control-group
-						label(for='select').control-label Public Access 
-						.controls
-							select#publicAccessLevel
-								option(value='private') Private
-								option(value='readOnly') Public - Read Only
-								option(value='readAndWrite') Public - Read and Write
+				//if privilegeLevel == 'owner'
+				//	.control-group
+				//		label(for='select').control-label Public Access 
+				//		.controls
+				//			select#publicAccessLevel
+				//				option(value='private') Private
+				//				option(value='readOnly') Public - Read Only
+				//				option(value='readAndWrite') Public - Read and Write
 
 			.tab-pane#exportSettings
 				a.btn#DownloadZip Download Project as Zip
-				div &nbsp;
-				a.btn(href='/project/'+project._id+'/clone').cloneProject Clone Project
+				//div &nbsp;
+				//a.btn(href='/project/'+project._id+'/clone').cloneProject Clone Project
 
 			.tab-pane#deleteProjectTab
 				if privilegeLevel == 'owner'

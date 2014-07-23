@@ -82,7 +82,7 @@ module.exports = class Router
 		app.post '/user/password/update', AuthenticationController.requireLogin(), UserController.changePassword
 
 		app.del  '/user/newsletter/unsubscribe', AuthenticationController.requireLogin(), UserController.unsubscribe
-		app.del  '/user', AuthenticationController.requireLogin(), UserController.deleteUser
+		#app.del  '/user', AuthenticationController.requireLogin(), UserController.deleteUser
 
 		app.get  '/dropbox/beginAuth', DropboxUserController.redirectUserToDropboxAuth
 		app.get  '/dropbox/completeRegistration', DropboxUserController.completeDropboxRegistration
@@ -117,7 +117,7 @@ module.exports = class Router
 		app.get "/project/:Project_id/sync/pdf", SecurityManager.requestCanAccessProject, CompileController.proxySync
 
 
-		app.del  '/Project/:Project_id', SecurityManager.requestIsOwner, ProjectController.deleteProject
+		#app.del  '/Project/:Project_id', SecurityManager.requestIsOwner, ProjectController.deleteProject
 		app.post '/Project/:Project_id/restore', SecurityManager.requestIsOwner, ProjectController.restoreProject
 		app.post '/Project/:Project_id/clone', SecurityManager.requestCanAccessProject, ProjectController.cloneProject
 
