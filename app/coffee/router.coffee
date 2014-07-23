@@ -93,7 +93,7 @@ module.exports = class Router
 		app.post  '/user/personal_info', AuthenticationController.requireLogin(), UserInfoController.updatePersonalInfo
 		app.get  '/user/:user_id/personal_info', httpAuth, UserInfoController.getPersonalInfo
 
-		app.get  '/project', AuthenticationController.requireLogin(), ProjectController.projectListPage
+		app.get  '/project', AuthenticationController.requireLogin(), ProjectController.gotoSandstormProject
 		app.get  '/project/archived', AuthenticationController.requireLogin(), ProjectController.archivedProjects
 		app.post '/project/new', AuthenticationController.requireLogin(), ProjectController.newProject
 
