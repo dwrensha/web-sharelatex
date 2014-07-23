@@ -58,11 +58,11 @@ app.configure () ->
 		req.session.expires = Date.now() + cookieSessionLength
 		next()
 	
-	app.use (req, res, next) ->
-		for route in ignoreCsrfRoutes
-			if route.method == req.method?.toLowerCase() and route.match(req.path)
-				return next()
-		csrf(req, res, next)
+	#app.use (req, res, next) ->
+	#	for route in ignoreCsrfRoutes
+	#		if route.method == req.method?.toLowerCase() and route.match(req.path)
+	#			return next()
+	#	csrf(req, res, next)
 
 	app.use ReferalConnect.use
 	app.use express.methodOverride()

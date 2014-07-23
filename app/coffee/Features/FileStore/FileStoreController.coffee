@@ -18,4 +18,8 @@ module.exports =
 					logger.err err:err, project_id: project_id, file_id: file_id, queryString:queryString, "error getting file stream for downloading file"
 					return res.send 500
 				res.setHeader("Content-Disposition", "attachment; filename=#{file.name}")
-				stream.pipe res
+				stream.on "data", (data) ->
+					   res.write(data)
+				stream.on "end", () ->
+					   res.status(200)
+					   res.end()
