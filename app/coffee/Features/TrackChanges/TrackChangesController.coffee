@@ -15,7 +15,11 @@ module.exports = TrackChangesController =
 				headers:
 					"X-User-Id": user_id
 			)
-			getReq.pipe(res)
+			getReq.on "data", (data) ->
+				  res.write(data)
+			getReq.on "end", () ->
+				res.status(200)
+				res.end()
 			getReq.on "error", (error) ->
 				logger.error err: error, "track-changes API error"
 				next(error)
