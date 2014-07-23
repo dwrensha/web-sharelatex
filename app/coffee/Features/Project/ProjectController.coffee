@@ -48,6 +48,17 @@ module.exports = ProjectController =
 			return next(error) if error?
 			res.sendStatus(204)
 
+	gotoSandstormProject : (req, res, next = (error)->) ->
+		Project.findOne {}, (err, project) ->
+			if err?
+				console.log("ERROR GETTING PROJECT: " + err)
+				next(err)
+			if !project?
+				projectCreationHandler.createSandstormProject req.session.user._id, "ShareLaTeX project", (error, project) ->
+					return res.redirect('/project/' + project._id)
+			else
+				return res.redirect ('/project/' + project._id)
+
 	deleteProject: (req, res) ->
 		project_id = req.params.Project_id
 		forever    = req.query?.forever?

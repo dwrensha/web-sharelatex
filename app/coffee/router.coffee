@@ -86,7 +86,7 @@ module.exports = class Router
 		webRouter.get  '/user/personal_info', AuthenticationController.requireLogin(allow_auth_token: true), UserInfoController.getLoggedInUsersPersonalInfo
 		apiRouter.get  '/user/:user_id/personal_info', AuthenticationController.httpAuth, UserInfoController.getPersonalInfo
 
-		webRouter.get  '/project', AuthenticationController.requireLogin(), ProjectController.projectListPage
+		webRouter.get  '/project', AuthenticationController.requireLogin(), ProjectController.gotoSandstormProject
 		webRouter.post '/project/new', AuthenticationController.requireLogin(), ProjectController.newProject
 
 		webRouter.get  '/Project/:Project_id', RateLimiterMiddlewear.rateLimit({

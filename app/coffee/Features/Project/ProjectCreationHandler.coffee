@@ -7,6 +7,7 @@ Project = require('../../models/Project').Project
 Folder = require('../../models/Folder').Folder
 ProjectEntityHandler = require('./ProjectEntityHandler')
 User = require('../../models/User').User
+UserCreator = require('../User/UserCreator')
 fs = require('fs')
 Path = require "path"
 _ = require "underscore"
@@ -76,4 +77,42 @@ module.exports =
 				callback null, output.split("\n")
 
 
+	sandstormProjectId : "5392f7810023f5fe374c75f2"
 
+	createSandstormProject : (owner_id, projectName, callback = (error, project)-> ) ->
+		self = @
+		@createBlankSandstormProject owner_id, projectName, (error, project)->
+			return callback(error) if error?
+			async.series [
+				(callback) ->
+					self._buildTemplate "main.tex", owner_id, projectName, (error, docLines)->
+						return callback(error) if error?
+						ProjectEntityHandler.addDoc project._id, project.rootFolder[0]._id, "main.tex", docLines, "", (error, doc)->
+							return callback(error) if error?
+							ProjectEntityHandler.setRootDoc project._id, doc._id, callback
+				(callback) ->
+					self._buildTemplate "references.bib", owner_id, projectName, (error, docLines)->
+						return callback(error) if error?
+						ProjectEntityHandler.addDoc project._id, project.rootFolder[0]._id, "references.bib", docLines, "", (error, doc)->
+							callback(error)
+				(callback) ->
+					universePath = Path.resolve(__dirname + "/../../../templates/project_files/universe.jpg")
+					ProjectEntityHandler.addFile project._id, project.rootFolder[0]._id, "universe.jpg", universePath, callback
+			], (error) ->
+				callback(error, project)
+
+	createBlankSandstormProject : (owner_id, projectName, callback = (error, project) ->)->
+		self = @
+		logger.log owner_id:owner_id, projectName:projectName, "creating blank project"
+		rootFolder = new Folder {'name':'rootFolder'}
+		project = new Project
+			 owner_ref  : owner_id
+			 name       : projectName
+			 useClsi2   : true
+		project._id = new ObjectId(self.sandstormProjectId)
+		project.rootFolder[0] = rootFolder
+		User.findById owner_id, "ace.spellCheckLanguage", (err, user)->
+			project.spellCheckLanguage = user.ace.spellCheckLanguage
+			project.save (err)->
+				return callback(err) if err?
+				callback err, project
