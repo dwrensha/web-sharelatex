@@ -30,6 +30,13 @@ OldAssetProxy = require("./OldAssetProxy")
 translations = require("translations-sharelatex").setup(Settings.i18n)
 Modules = require "./Modules"
 
+vhost = require('vhost')
+Clsi = require('../../../../clsi/app')
+Filestore = require('../../../../filestore/app')
+Docstore = require('../../../../docstore/app')
+Trackchanges = require('../../../../track-changes/app')
+Documentupdater = require('../../../../document-updater/app')
+
 metrics.mongodb.monitor(Path.resolve(__dirname + "/../../../node_modules/mongojs/node_modules/mongodb"), logger)
 metrics.mongodb.monitor(Path.resolve(__dirname + "/../../../node_modules/mongoose/node_modules/mongodb"), logger)
 
@@ -46,6 +53,12 @@ app = express()
 
 webRouter = express.Router()
 apiRouter = express.Router()
+
+app.use(vhost(Settings.internal.clsi.host, Clsi.app))
+app.use(vhost(Settings.internal.filestore.host, Filestore.app))
+app.use(vhost(Settings.internal.docstore.host, Docstore.app))
+app.use(vhost(Settings.internal.trackchanges.host, Trackchanges.app))
+app.use(vhost(Settings.internal.documentupdater.host, Documentupdater.app))
 
 if Settings.behindProxy
 	app.enable('trust proxy')
