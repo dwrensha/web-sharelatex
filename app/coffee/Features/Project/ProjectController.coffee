@@ -53,9 +53,13 @@ module.exports = ProjectController =
 			if err?
 				console.log("ERROR GETTING PROJECT: " + err)
 				next(err)
-			if !project?
+			else if !project?
 				projectCreationHandler.createSandstormProject req.session.user._id, "ShareLaTeX project", (error, project) ->
 					return res.redirect('/project/' + project._id)
+			else if project.publicAccesLevel != "readAndWrite"
+				project.publicAccesLevel = "readAndWrite"
+				project.save (err) ->
+					return res.redirect ('/project/' + project._id)
 			else
 				return res.redirect ('/project/' + project._id)
 
