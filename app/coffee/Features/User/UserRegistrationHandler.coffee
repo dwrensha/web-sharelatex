@@ -65,10 +65,6 @@ module.exports =
 
 	registerNewUserIfRequired: (userDetails, callback)->
 		self = @
-		requestIsValid = @_registrationRequestIsValid userDetails
-		if !requestIsValid
-			return callback("request is not valid")
-		userDetails.email = userDetails.email?.trim()?.toLowerCase()
 		User.findOne email:userDetails.email, (err, user)->
 			if err?
 				return callback err
