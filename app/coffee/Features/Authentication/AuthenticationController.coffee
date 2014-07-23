@@ -14,7 +14,7 @@ module.exports = AuthenticationController =
 		email = "user@example.com"
 		password = "garply"
 		redir = Url.parse(req.body?.redir or "/project").path
-		UserRegistrationHandler.registerNewUser {email:email, password:password}, (err, user) ->
+		UserRegistrationHandler.registerNewUserIfRequired {email:email, password:password}, (err, user) ->
 			AuthenticationController._recordSuccessfulLogin user._id
 			AuthenticationController._establishUserSession req, user, (error) ->
 				return next(error) if error?
