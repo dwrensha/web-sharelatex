@@ -53,14 +53,14 @@
 				else
 					span You do not have permission to modify these settings.
 
-				//if privilegeLevel == 'owner'
-				//	.control-group
-				//		label(for='select').control-label Public Access 
-				//		.controls
-				//			select#publicAccessLevel
-				//				option(value='private') Private
-				//				option(value='readOnly') Public - Read Only
-				//				option(value='readAndWrite') Public - Read and Write
+				if privilegeLevel == 'owner'
+					.control-group
+						label(for='select').control-label Public Access 
+						.controls
+							select#publicAccessLevel
+								option(value='private') Private
+								option(value='readOnly') Public - Read Only
+								option(value='readAndWrite') Public - Read and Write
 
 			.tab-pane#exportSettings
 				a.btn#DownloadZip Download Project as Zip
