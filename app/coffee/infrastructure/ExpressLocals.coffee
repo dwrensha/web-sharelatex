@@ -95,7 +95,7 @@ module.exports = (app, webRouter, apiRouter)->
 		next()
 
 	webRouter.use (req, res, next) ->
-		res.locals.csrfToken = req?.csrfToken()
+		#res.locals.csrfToken = req?.csrfToken()
 		next()
 
 	webRouter.use (req, res, next) ->

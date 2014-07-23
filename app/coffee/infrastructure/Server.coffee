@@ -79,7 +79,7 @@ webRouter.use session
 		secure: Settings.secureCookie
 	store: sessionStore
 	key: Settings.cookieName
-webRouter.use csrfProtection
+#webRouter.use csrfProtection
 webRouter.use translations.expressMiddlewear
 webRouter.use translations.setLangBasedOnDomainMiddlewear
 
