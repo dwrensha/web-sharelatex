@@ -29,12 +29,12 @@ define [
 
 		changeOpenDoc: () ->
 			@highlightedWordManager.clearRows()
-			@runSpellCheck()
+			#@runSpellCheck()
 
 		onDocUpdated: (e) ->
 			@highlightedWordManager.applyChange(e.data)
 			@markLinesAsUpdated(e.data)
-			@runSpellCheckSoon()
+			#@runSpellCheckSoon()
 
 		onMouseMove: (e) ->
 			@showMenuIfOverMisspelling(e.position)

@@ -115,7 +115,7 @@ define [
 			@pdfManager = new PdfManager(@)
 			if @userSettings.autoComplete
 				@autoCompleteManager = new AutoCompleteManager(@)
-			@spellingManager = new SpellingManager(@)
+			#@spellingManager = new SpellingManager(@)
 			@fileUploadManager = new FileUploadManager(@)
 			@searchManager = new SearchManager(@)
 			@cursorManager = new CursorManager(@)
@@ -204,7 +204,7 @@ define [
 	ide.helpManager = new HelpManager ide
 	ide.hotkeysManager = new HotkeysManager ide
 	ide.layoutManager.resizeAllSplitters()
-	ide.tourManager = new IdeTour ide
+	#ide.tourManager = new IdeTour ide
 	ide.debugManager = new DebugManager(ide)
 
 	ide.savingAreaManager = new SavingAreaManager(ide)
