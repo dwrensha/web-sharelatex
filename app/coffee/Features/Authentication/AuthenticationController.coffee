@@ -18,7 +18,7 @@ module.exports = AuthenticationController =
 		if !userid?
 			userid = "anonymous"
 		email = userid + "@example.com"
-		name = req.headers["x-sandstorm-username"]
+		name = decodeURI(req.headers["x-sandstorm-username"])
 		if !name?
 			name = "anonymous"
 		redir = Url.parse(req.body?.redir or "/project").path
