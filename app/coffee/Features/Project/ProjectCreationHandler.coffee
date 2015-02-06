@@ -87,13 +87,13 @@ module.exports =
 				(callback) ->
 					self._buildTemplate "main.tex", owner_id, projectName, (error, docLines)->
 						return callback(error) if error?
-						ProjectEntityHandler.addDoc project._id, project.rootFolder[0]._id, "main.tex", docLines, "", (error, doc)->
+						ProjectEntityHandler.addDoc project._id, project.rootFolder[0]._id, "main.tex", docLines, (error, doc)->
 							return callback(error) if error?
 							ProjectEntityHandler.setRootDoc project._id, doc._id, callback
 				(callback) ->
 					self._buildTemplate "references.bib", owner_id, projectName, (error, docLines)->
 						return callback(error) if error?
-						ProjectEntityHandler.addDoc project._id, project.rootFolder[0]._id, "references.bib", docLines, "", (error, doc)->
+						ProjectEntityHandler.addDoc project._id, project.rootFolder[0]._id, "references.bib", docLines, (error, doc)->
 							callback(error)
 				(callback) ->
 					universePath = Path.resolve(__dirname + "/../../../templates/project_files/universe.jpg")
