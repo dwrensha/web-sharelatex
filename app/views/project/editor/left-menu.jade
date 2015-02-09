@@ -30,23 +30,6 @@ aside#left-menu.full-size(
 				i.fa.fa-file-pdf-o.fa-2x
 				br
 				| PDF
-				
-	span(ng-show="!anonymous")
-		h4 #{translate("actions")}
-		ul.list-unstyled.nav
-			li(ng-controller="CloneProjectController")
-				a(
-					href,
-					ng-click="openCloneProjectModal()"
-				)
-					i.fa.fa-fw.fa-copy
-					| &nbsp;&nbsp; #{translate("copy_project")}
-			!= moduleIncludes("editorLeftMenu:actions", locals)
-
-	if (moduleIncludesAvailable("editorLeftMenu:sync"))
-		div(ng-show="!anonymous")
-			h4() #{translate("sync")}
-			!= moduleIncludes("editorLeftMenu:sync", locals)
 
 	span(ng-show="!anonymous")
 		h4 #{translate("services")}
@@ -75,18 +58,6 @@ aside#left-menu.full-size(
 					ng-options="doc.doc.id as doc.path for doc in docs"
 				)
 
-			.form-controls
-				label(for="spellCheckLanguage") #{translate("spell_check")}
-				select(
-					name="spellCheckLanguage"
-					ng-model="project.spellCheckLanguage"
-				)
-					option(value="") #{translate("off")}
-					optgroup(label="Language")
-						for language in languages
-							option(
-								value=language.code
-							)= language.name
 
 			.form-controls
 				label(for="autoComplete") #{translate("auto_complete")}

@@ -7,13 +7,6 @@ header.toolbar.toolbar-header(ng-cloak, ng-hide="state.loading")
 		tooltip-append-to-body="true"
 	)
 		i.fa.fa-fw.fa-bars
-	a(
-		href="/project"
-		tooltip="#{translate('back_to_projects')}",
-		tooltip-placement="bottom",
-		tooltip-append-to-body="true"
-	)
-		i.fa.fa-fw.fa-level-up
 	span(ng-controller="PdfViewToggleController")
 		a(
 			href,
@@ -69,33 +62,9 @@ header.toolbar.toolbar-header(ng-cloak, ng-hide="state.loading")
 	
 		a.btn.btn-full-height(
 			href,
-			ng-if="permissions.admin",
-			tooltip="#{translate('share')}",
-			tooltip-placement="bottom",
-			ng-click="openShareProjectModal()",
-			ng-controller="ShareController"
-		)
-			i.fa.fa-fw.fa-group
-		a.btn.btn-full-height(
-			href,
 			ng-click="toggleTrackChanges()",
 			ng-class="{ active: (ui.view == 'track-changes') }"
 			tooltip="#{translate('recent_changes')}",
 			tooltip-placement="bottom"
 		)
 			i.fa.fa-fw.fa-history
-		a.btn.btn-full-height(
-			href,
-			tooltip="#{translate('chat')}",
-			tooltip-placement="bottom",
-			ng-class="{ active: ui.chatOpen }",
-			ng-click="toggleChat()",
-			ng-controller="ChatButtonController",
-			ng-show="!anonymous"
-		)
-			i.fa.fa-fw.fa-comment(
-				ng-class="{ 'bounce': unreadMessages > 0 }"
-			)
-			span.label.label-info(
-				ng-show="unreadMessages > 0"
-			) {{ unreadMessages }}
