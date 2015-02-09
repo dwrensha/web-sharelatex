@@ -36,6 +36,7 @@ Filestore = require('../../../../filestore/app')
 Docstore = require('../../../../docstore/app')
 Trackchanges = require('../../../../track-changes/app')
 Documentupdater = require('../../../../document-updater/app')
+Realtime = require('../../../../real-time/app')
 
 metrics.mongodb.monitor(Path.resolve(__dirname + "/../../../node_modules/mongojs/node_modules/mongodb"), logger)
 metrics.mongodb.monitor(Path.resolve(__dirname + "/../../../node_modules/mongoose/node_modules/mongodb"), logger)
@@ -136,6 +137,7 @@ apiRouter.get "/profile", (req, res) ->
 
 logger.info ("creating HTTP server").yellow
 server = require('http').createServer(app)
+Realtime.setup(server)
 
 # process api routes first, if nothing matched fall though and use
 # web middlewear + routes
