@@ -223,13 +223,9 @@ module.exports = ProjectController =
 			daysSinceLastUpdated =  (new Date() - project.lastUpdated) /86400000
 			logger.log project_id:project_id, daysSinceLastUpdated:daysSinceLastUpdated, "got db results for loading editor"
 
-			SecurityManager.userCanAccessProject user, project, (canAccess, privilegeLevel)->
-				if !canAccess
-					return res.sendStatus 401
+			privilegeLevel = SecurityManager.getPrivilegeLevel(req)
 
-				if subscription? and subscription.freeTrial? and subscription.freeTrial.expiresAt?
-					allowedFreeTrial = !!subscription.freeTrial.allowed || true
-				logger.log project_id:project_id, "rendering editor page"
+			if true
 				res.render 'project/editor',
 					title:  project.name
 					priority_title: true
@@ -243,7 +239,7 @@ module.exports = ProjectController =
 						last_name  : user.last_name
 						referal_id : user.referal_id
 						subscription :
-							freeTrial: {allowed: allowedFreeTrial}
+							freeTrial: {allowed: true}
 						featureSwitches: user.featureSwitches
 					}
 					userSettings: {

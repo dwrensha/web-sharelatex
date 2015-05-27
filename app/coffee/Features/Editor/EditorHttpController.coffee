@@ -8,6 +8,7 @@ UserGetter = require('../User/UserGetter')
 AuthorizationManager = require("../Security/AuthorizationManager")
 ProjectEditorHandler = require('../Project/ProjectEditorHandler')
 Metrics = require('../../infrastructure/Metrics')
+SecurityManager = require('../../managers/SecurityManager')
 
 module.exports = EditorHttpController =
 	joinProject: (req, res, next) ->
@@ -17,6 +18,7 @@ module.exports = EditorHttpController =
 		Metrics.inc "editor.join-project"
 		EditorHttpController._buildJoinProjectView project_id, user_id, (error, project, privilegeLevel) ->
 			return next(error) if error?
+			privilegeLevel = SecurityManager.getPrivilegeLevel(req)
 			res.json {
 				project: project
 				privilegeLevel: privilegeLevel

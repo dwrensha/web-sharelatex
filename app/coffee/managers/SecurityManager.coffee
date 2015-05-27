@@ -43,18 +43,7 @@ module.exports = SecurityManager =
 
 	requestCanAccessProject : (req, res, next)->
 		doRequest = (req, res, next) ->
-			getRequestUserAndProject req, res, {allow_auth_token: options?.allow_auth_token}, (err, user, project)->
-				if !project? or project.archived
-					return ErrorController.notFound(req, res, next)
-				userCanAccessProject user, project, (canAccess, permissionLevel)->
-					if canAccess
-						next()
-					else if user?
-						logger.log "user_id: #{user._id} email: #{user.email} trying to access restricted page #{req.path}"
-						res.redirect('/restricted')
-					else
-						logger.log "user not logged in and trying to access #{req.url}, being redirected to login"
-						AuthenticationController._redirectToLoginOrRegisterPage(req, res)
+			next()
 		if arguments.length > 1
 			options =
 				allow_auth_token: false
@@ -63,29 +52,22 @@ module.exports = SecurityManager =
 			options = req
 			return doRequest
 
-	requestCanModifyProject : (req, res, next)->
-		getRequestUserAndProject req, res, {}, (err, user, project)=>
-			userCanModifyProject user, project, (canModify)->
-				if canModify
-					next()
-				else
-					logger.log "user_id: #{user?._id} email: #{user?.email} can not modify project redirecting to restricted page"
-					res.redirect('/restricted')
+	requestHasWritePermission: (req) ->
+		permissionsArray = req.headers['x-sandstorm-permissions'].split(',');
+		return (permissionsArray.indexOf("write") != -1)
 
-	userCanModifyProject : userCanModifyProject = (user, project, callback)->
-		if !user? or !project?
-			callback false
-		else if userIsOwner user, project
-			callback true
-		else if userIsCollaberator user, project
-			callback true
-		else if project.publicAccesLevel == "readAndWrite"
-			callback true
-		else if user.isAdmin
-			callback true
+	getPrivilegeLevel: (req) ->
+		if SecurityManager.requestHasWritePermission (req)
+			return "readAndWrite"
 		else
-			callback false
+			return "readOnly"
 
+	requestCanModifyProject : (req, res, next)->
+		if SecurityManager.requestHasWritePermission(req)
+			next()
+		else
+			logger.log "user_id: #{user?._id} email: #{user?.email} can not modify project redirecting to restricted page"
+			res.redirect('/restricted')
 
 	requestIsOwner : (req, res, next)->
 		getRequestUserAndProject req, res, {}, (err, user, project)->
